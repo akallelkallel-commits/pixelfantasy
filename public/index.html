@@ -2305,7 +2305,7 @@ function update(dt){
   if(NET.shared){const k=Math.min(1,dt*10);for(const c of cr){if(c.tx!=null){c.x+=(c.tx-c.x)*k;c.y+=(c.ty-c.y)*k}}}
   else for(let n=cr.length-1;n>=0;n--){const c=cr[n];if(!c)continue;const tg=netTarget(c);if(tg){const sv=[S.px,S.py,S.fly,S.boat,invT];S.px=tg.x;S.py=tg.y;S.fly=!!tg.fl;S.boat=tg.bo||null;invT=tg.inv>0?tg.inv:0;NET.tgt=tg;const r=crStep(c,n,dt);NET.tgt=null;tg.inv=invT;[S.px,S.py,S.fly,S.boat,invT]=sv;if(r)return}else if(crStep(c,n,dt))return}
   if((spT+=dt)>(EV==='lua'&&S.z===0?.6:1.6)){spT=0;if(!NET.shared){spawnCr();if(NET.role==='host')for(const id in NET.peers){const q=NET.peers[id];if(q.x==null||q.z!==S.z)continue;const sv=[S.px,S.py];S.px=q.x;S.py=q.y;spawnCr();S.px=sv[0];S.py=sv[1]}}}
-  if((secT+=dt)>=1){secT-=1;if(!NET.shared){bosses();villagers()}structs();evSec();if(FX.ps>0){FX.ps--;part(S.px,S.py-10,'#8aff4a',4,30);if(FX.ps%2===0){hurt(1,0,0,1);if(panel)return}}for(const c of cr.slice())if(c.burn>0){c.burn--;part(c.x,c.y-8,'#f2a23a',6,40);hitCr(c,1,0,0)}
+  if((secT+=dt)>=1){secT-=1;if((AUTOS=(typeof AUTOS==='number'?AUTOS:0)+1)>=30){AUTOS=0;save()}if(!NET.shared){bosses();villagers()}structs();evSec();if(FX.ps>0){FX.ps--;part(S.px,S.py-10,'#8aff4a',4,30);if(FX.ps%2===0){hurt(1,0,0,1);if(panel)return}}for(const c of cr.slice())if(c.burn>0){c.burn--;part(c.x,c.y-8,'#f2a23a',6,40);hitCr(c,1,0,0)}
     {const hm=[.5,1,1.4][S.dif??1];S.fome=Math.max(0,S.fome-hm/45);S.sede=Math.max(0,S.sede-hm/32)}
     if(S.sede<3&&!wS){wS=1;toast('Você está com sede. Chegue na água e aja nela para beber.')}else if(S.sede>5)wS=0;
     if(S.fome<3&&!wF){wF=1;toast('Você está com fome. Coma fruta ou asse carne na Fogueira.')}else if(S.fome>5)wF=0;
@@ -2519,6 +2519,7 @@ function drawPeers(L,now,camx,camy){for(const id in NET.peers){const p=NET.peers
   else L.push([p.y,im,px-6,py-16,fl]);
   L.push([p.y+500,()=>{const nm=p.name||'Amigo',ty=py-(p.fl?36:p.mo?30:22);cx.font='bold 7px monospace';cx.textAlign='center';cx.lineWidth=2;cx.strokeStyle='rgba(16,12,24,.85)';cx.strokeText(nm,px+8,ty);cx.fillStyle='#fff4b0';cx.fillText(nm,px+8,ty);cx.textAlign='left'}])}}
 
+var AUTOS=0;addEventListener('visibilitychange',()=>{if(document.hidden&&S&&!MENU)save()});addEventListener('pagehide',()=>{if(S&&!MENU)save()});
 let last=0;function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(MENU){S.px+=dt*16;S.py+=dt*7;if((menuT+=dt)>1){menuT=0;ensureAt(ptx(),pty())}}else{if(!panel||NET.on)update(dt);if(NET.on)netTick(dt)}draw(now,dt);requestAnimationFrame(loop)}
 
 /* ---------- painéis ---------- */

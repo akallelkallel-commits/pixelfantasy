@@ -1,4 +1,4 @@
-# Pixel Box com multiplayer
+# Pixel Fantasy com multiplayer
 
 Nesta pasta tem tudo para rodar o jogo num servidor e jogar junto com outra pessoa:
 
